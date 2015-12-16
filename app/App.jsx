@@ -1,5 +1,11 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
+var ReactRouter = require("react-router");
+var Router = ReactRouter.Router;
+var Route = ReactRouter.Route;
+var Link = ReactRouter.Link;
+var IndexRoute = ReactRouter.IndexRoute;
+
 
 
 var About = require("./About.jsx");
@@ -26,29 +32,30 @@ var App = React.createClass({
 	
 	render () {
 		
-		var Child = Home;
+		var name = "erin";
 		
-		if (this.state.route === "#about") {
-			Child = About;
-		} else if (this.state.route === "#contact") {
-			Child = Contact;
-		}
-		
-		console.log(this.state);
 		return (
 			<div> 
-				<a href="#">Home</a>
-				<a href="#about">About</a>
-				<a href="#contact">Contact</a>
+				<Link to="/">Home</Link>
+				<Link to={"/about/" + name}>About</Link>
+				<Link to="/contact">Contact</Link>
 				<div style={{padding: 40}}>
-					<Child />
+					{this.props.children}
 				</div>
 			</div>
 		);
 	}
 });
 
-ReactDOM.render(<App />, document.getElementById("app"));
+ReactDOM.render(
+	<Router>
+  	<Route component={App} path='/'>
+    	<IndexRoute component={Home} /> // Inherits parent path
+    	<Route component={About} path='about/:name' />
+    	<Route component={Contact} path='contact' />
+  	</Route>
+	</Router>
+, document.getElementById("app"));
 
 
 // create an App component for our application
