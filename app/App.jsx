@@ -1,19 +1,54 @@
-const React = require("react");
-const ReactDOM = require("react-dom");
+var React = require("react");
+var ReactDOM = require("react-dom");
 
-const App = React.createClass({
+
+var About = require("./About.jsx");
+var Contact = require("./Contact.jsx");
+var Home = require("./Home.jsx");
+
+
+var App = React.createClass({
+	
+	getInitialState () {
+		return {
+			route: window.location.hash
+		}
+	},
+	
+	componentDidMount () {
+		window.addEventListener("hashchange", () => {
+			this.setState({
+				route: window.location.hash
+			})
+		});	
+	},
+	
+	
 	render () {
+		
+		var Child = Home;
+		
+		if (this.state.route === "#about") {
+			Child = About;
+		} else if (this.state.route === "#contact") {
+			Child = Contact;
+		}
+		
+		console.log(this.state);
 		return (
 			<div> 
-			<a href="#">Home</a>
-			<a href="#about">About</a>
-			<a href="#contact">Contact</a>
+				<a href="#">Home</a>
+				<a href="#about">About</a>
+				<a href="#contact">Contact</a>
+				<div style={{padding: 40}}>
+					<Child />
+				</div>
 			</div>
 		);
 	}
 });
 
-ReactDOM.render(<App />, document.getElementById(("app"));
+ReactDOM.render(<App />, document.getElementById("app"));
 
 
 // create an App component for our application
